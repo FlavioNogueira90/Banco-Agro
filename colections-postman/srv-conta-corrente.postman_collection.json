@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "2f26a8af-019b-4e0b-a047-dfd0ead126dc",
+		"name": "srv-conta-corrente",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31616549"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"agencia\": 570,\r\n    \"saldo\": 100.00,\r\n    \"limiteChequeEspecial\": 50.00,\r\n    \"taxaManutencao\": 6.99,\r\n    \"talonarioCheque\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL CONTACORRENTE",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"agencia\": 570,\r\n    \"saldo\": 100.00,\r\n    \"limiteChequeEspecial\": 50.00,\r\n    \"taxaManutencao\": 6.99,\r\n    \"talonarioCheque\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

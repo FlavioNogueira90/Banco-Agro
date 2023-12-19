@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "ad3a82a0-8ebf-460a-b56a-0fbf0a3ed33b",
+		"name": "srv-abertura-conta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31616549"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cliente\": {\r\n        \"cpf\": \"39466644456\"\r\n    },\r\n    \"contaCorrente\": {\r\n        \"agencia\": 570,\r\n        \"saldo\": 12100.00,\r\n        \"limiteChequeEspecial\": 50.00,\r\n        \"taxaManutencao\": 6.99,\r\n        \"talonarioCheque\": false\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/srv-abertura-conta/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"srv-abertura-conta",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
