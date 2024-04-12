@@ -1,0 +1,13 @@
+version: '3.8'
+networks:
+  banco-agro:
+    driver: bridge
+
+services:
+  srv-abertura-conta:
+    image: srv-abertura-conta:latest
+    ports:
+      - "8087:8087"
+    networks:
+      - banco-agro
+

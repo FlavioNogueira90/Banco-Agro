@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Repository
-@FeignClient(name = "srv-conta-corrente", url = "http://localhost:9090/api/srv-conta-corrente")
+@FeignClient(name = "srv-conta-corrente", url = "http://10.102.114.146:8080/api/srv-conta-corrente")
 public interface ContaCorrenteApiService {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     ContaCorrente getById(@PathVariable Long id);

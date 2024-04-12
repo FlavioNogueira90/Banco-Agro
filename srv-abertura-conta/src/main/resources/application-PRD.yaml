@@ -1,0 +1,32 @@
+springdoc:
+  api-docs:
+    path: /v3/api-docs  # Caminho para a documenta��o OpenAPI
+  swagger-ui:
+    path: /swagger-ui.html  # Caminho para a interface do Swagger
+
+
+spring:
+  application:
+    name: SRV-ABERTURA-CONTA
+server:
+  port: 8087
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://10.101.118.113:8761/eureka
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://10.109.126.152:9411/api/v2/spans
+  tracing:
+     sampling:
+       probability: 1.0
+
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus

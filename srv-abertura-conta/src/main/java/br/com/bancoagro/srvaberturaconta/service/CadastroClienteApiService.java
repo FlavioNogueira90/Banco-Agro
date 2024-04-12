@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Repository
-@FeignClient(name = "srv-cadastro-cliente", url = "http://localhost:9090/api/srv-cadastro-cliente")
+@FeignClient(name = "srv-cadastro-cliente", url = "http://10.102.114.146:8080/api/srv-cadastro-cliente")
 public interface CadastroClienteApiService {
     @RequestMapping(method = RequestMethod.GET, value = "/cpf/{cpf}")
     Cliente getByCpf(@PathVariable String cpf);

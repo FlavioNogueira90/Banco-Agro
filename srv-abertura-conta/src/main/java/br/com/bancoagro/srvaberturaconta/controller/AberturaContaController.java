@@ -7,6 +7,8 @@ import br.com.bancoagro.srvaberturaconta.service.dto.AberturaContaDto;
 import br.com.bancoagro.srvaberturaconta.service.model.Cliente;
 import br.com.bancoagro.srvaberturaconta.service.model.ContaCorrente;
 import ch.qos.logback.classic.Logger;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,14 @@ public class AberturaContaController {
 	CadastroClienteService cadastroClienteService;
 	@Autowired
 	Cliente cliente;
+
+
+	public final MeterRegistry meterRegistry;
+
+	public AberturaContaController(MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity getById(@PathVariable long id) {
 		try {
@@ -44,8 +54,16 @@ public class AberturaContaController {
 			Cliente cliente = validaCliente(dados.getCliente().getCpf());
 			dados.getContaCorrente().setClienteId(cliente.getId());
 			contaCorrenteService.create(dados.getContaCorrente());
+			Counter counter = Counter.builder("Quantidade_de_contas_abertas")
+							.tag("contas_abertas", "sucesso")
+							.register(meterRegistry);
+			counter.increment();
 			return ResponseEntity.status(HttpStatus.CREATED).body(dados.getContaCorrente());
 		}catch (AberturaContaNotFoundException ex){
+			Counter counter = Counter.builder("Quantidade_de_erros_na_abertura_de_contas")
+					.tag("Nao_abertas", "erros")
+					.register(meterRegistry);
+			counter.increment();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("Message", "Not Found"));
 		}
 	}

@@ -1,0 +1,38 @@
+version: '3.8'
+networks:
+  banco-agro:
+    driver: bridge
+
+services:
+  srv-cadastro-cliente:
+    image: srv-cadastro-cliente:latest
+    ports:
+      - "8082:8082"
+    networks:
+      - banco-agro
+    depends_on:
+      - eureka-server
+      - bd-cadastro-cliente
+
+  eureka-server:
+    image: eureka-server:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - banco-agro
+
+  bd-cadastro-cliente:
+    container_name: db-cadastro-cliente
+    image: mysql:8.1
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_TCP_PORT=$MYSQL_DOCKER_PORT
+    ports:
+      - "3306:3306"
+    expose:
+      - $MYSQL_DOCKER_PORT
+    networks:
+      - banco-agro
