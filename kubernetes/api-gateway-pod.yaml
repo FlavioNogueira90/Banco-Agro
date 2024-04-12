@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: api-gateway-pod
+  labels: 
+    tier: api-gateway
+spec:
+  containers:
+  - image: bancoagro/api-gateway:0.3
+    name: api-gateway-pod
+    ports:
+    - containerPort: 8080
+    env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: "PRD"

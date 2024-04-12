@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: eureka-server-svc-lb
+spec:
+  selector:
+    tier: eureka-server
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 30001
+    nodePort: 8761                              

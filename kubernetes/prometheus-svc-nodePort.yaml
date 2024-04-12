@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: prometheus-svc-port
+spec:
+  selector:
+    app: prometheus
+  type: NodePort
+  ports:
+  - name: porta-externa
+    protocol: TCP
+    port: 9090
+    targetPort: 9090
+    nodePort: 30005                              

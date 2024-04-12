@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: banco-agro-pod
+  labels:
+    tier: api-banco-agro
+spec:
+  containers:
+  - image: bancoagro/srv-cadastro-cliente:0.2
+    name: srv-cadastro-cliente
+    ports:
+    - containerPort: 8082
+  - image: bancoagro/srv-abertura-conta:0.2
+    name: srv-abertura-conta
+    ports:
+    - containerPort: 8087
+  - image: bancoagro/srv-conta-corrente:0.2
+    name: srv-conta-corrente
+    ports:
+    - containerPort: 8081
+  restartPolicy: Never

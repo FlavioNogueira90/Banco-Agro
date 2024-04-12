@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: eureka-server-pod
+  labels: 
+    tier: eureka-server
+spec:
+  containers:
+  - image: bancoagro/eureka-server:0.3
+    name: eureka-server-pod
+    ports:
+    - containerPort: 8761

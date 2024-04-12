@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: srv-cadastro-cliente-svc
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8082
+  selector:
+    tier: srv-cadastro-cliente

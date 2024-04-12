@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: srv-conta-corrente-svc-port
+spec:
+  selector:
+    tier: srv-conta-corrente
+  type: NodePort
+  ports:
+  - name: porta-externa
+    protocol: TCP
+    port: 8081
+    nodePort: 30004                              

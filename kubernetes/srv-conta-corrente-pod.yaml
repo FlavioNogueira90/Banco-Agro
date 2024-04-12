@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: srv-conta-corrente-pod
+  labels: 
+    tier: srv-conta-corrente
+spec:
+  containers:
+  - image: bancoagro/srv-conta-corrente:0.3
+    name: srv-conta-corrente-pod
+    ports:
+    - containerPort: 8081
+    env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: "PRD"

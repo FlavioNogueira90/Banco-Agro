@@ -1,0 +1,71 @@
+comandos docker gerar imagem (vesão 0.1) -> As imagens versão 0.2 estão configuradas com os IPs do kubernetes
+docker build . -t bancoagro/eureka-server:0.1
+docker build . -t bancoagro/srv-cadastro-cliente:0.2
+docker build . -t bancoagro/srv-abertura-conta:0.1
+docker build . -t bancoagro/srv-conta-corrente:0.1
+docker build . -t bancoagro/api-gateway:0.1
+
+Comandos docker subir imagem e rodar container
+docker run --name eureka-server -d --rm -p 8761:8761 --network banco-agro bancoagro/eureka-server:0.1
+docker run --name db-cadastro-cliente -e MYSQL_ROOT_PASSWORD=1234567 -e MYSQL_DATABASE=operacoes_bancarias -p 3306:3306 --network banco-agro mysql:8.1
+docker run --name srv-cadastro-cliente -d -p 8082:8082 --rm --network banco-agro bancoagro/srv-cadastro-cliente:0.2
+docker run --name srv-abertura-conta -d -p 8087:8087 --rm --network banco-agro bancoagro/srv-abertura-conta:0.1
+docker run --name srv-conta-corrente -d -p 8081:8081 --rm --network banco-agro bancoagro/srv-conta-corrente:0.1
+docker run --name api-gateway -d -p 9090:9090 --rm --network banco-agro bancoagro/srv-cadastro-cliente:0.1
+
+
+Comandos do kubernetes para aplicação
+Primeiro passo, criar os arquivos com os dados de criação dos pods:
+1º eureka-server-pod.yaml
+2º api-gateway-pod.yaml
+3º sql-pod.yaml
+4º srv-cadastro-cliente.yaml
+5º srv-abertura-conta.yaml
+6º srv-conta-corrente.yaml
+===========================================================================================================================
+Subir primeiro o eureka para que os demais serviços se registrem. Vamos abrir a porta do rost para acompanhar os registros
+criar o pod: 		kubectl apply -f eureka-server-pod.yaml	
+fixar IP do cluster: 	kubectl apply -f eureka-server-svc-clusterIP.yaml
+liberar porta de acesso:kubectl apply -f eureka-server-svc-nodePort.yaml
+---------------------------------------------------------------------------------------------------------------------------
+Subir o api-gateway e liberar a porta, será a unica porta aberta para acesso aos serviços de fora do host
+criar o pod: 		kubectl apply -f api-gateway-pod.yaml	
+liberar porta de acesso:kubectl apply -f api-gateway-nodePort.yaml
+---------------------------------------------------------------------------------------------------------------------------
+Subir um pod com o mysql, criar o DB operacoes-bancarias, travar o ClusterIP para os outros srv acessarem
+criar o pod: 		kubectl apply -f db-mysql-pod.yaml
+fixar IP do cluster: 	kubectl apply -f db-mysql-svc-clusterIP.yaml
+---------------------------------------------------------------------------------------------------------------------------
+Subir os tres ultimos serviços, os mesmos devem se auto registrar no eureka e dois deles conectar ao banco de dados
+criar o pod: 		kubectl apply -f srv-cadastro-cliente-pod.yaml
+criar o pod: 		kubectl apply -f srv-abertura-conta-pod.yaml
+criar o pod: 		kubectl apply -f srv-conta-corrente-pod.yaml
+
+
+alias k=kubectl
+kubectl run nginx-pod --image=nginx
+kubectl describe po nginx-pod
+kubectl get po -o wide
+kubectl exec -it nginx-pod --/bin/bash
+
+kubectl run banco-agro-pod --image=bancoagro/eureka-server:0.1
+
+dentro do diretorio do arquivo
+kubectl apply -f banco-agro-pod.yaml
+kubectl delete -f banco-agro-pod.yaml
+kubectl get po --show-labels
+kubectl get svc
+
+
+DESMEMBRAR OS CONTAINERES, CADA POD COM UM CONTAINER
+
+
+comandos para acessar as tabelas do database dentro do pod
+kubectl exec -it db-mysql-pod -- /bin/bash
+mysql -u root -p1234567
+SHOW DATABASES;
+USE operacoes_bancarias;
+SHOW TABLES;
+
+comando para acessar o prometheus, após rodar esse comando pode ser acessado via localhost:9090
+kubectl port-forward service/prometheus 9090:9090

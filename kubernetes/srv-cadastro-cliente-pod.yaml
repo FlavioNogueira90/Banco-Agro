@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: srv-cadastro-cliente-pod
+  labels: 
+    tier: srv-cadastro-cliente
+spec:
+  containers:
+  - image: bancoagro/srv-cadastro-cliente:0.3
+    name: srv-cadastro-cliente-pod
+    ports:
+    - containerPort: 8082
+    env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: "PRD"
